@@ -51,11 +51,15 @@
       align-items: center;
     }
 
+    h/* 1. Modifica el estilo del H1 para que sea flexible */
     h1 { 
-      margin-bottom: 40px; 
+      margin-bottom: 30px; 
       text-shadow: 0 0 10px var(--neon-blue); 
-      font-size: 2.8em; 
+      font-size: clamp(1.8em, 8vw, 2.8em); /* Esto hace que el tamaño se adapte solo */
       letter-spacing: 2px;
+      text-align: center;
+      width: 100%;
+      white-space: normal; /* Permite que baje, pero lo controlaremos con el tamaño */
     }
 
     .main-wrapper {
@@ -141,9 +145,25 @@
     .top-1 { border: 1px solid var(--gold); background: rgba(255, 215, 0, 0.15); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
     .pts-value { color: var(--accent); font-weight: bold; text-shadow: 0 0 5px var(--accent); }
 
+    /* 2. Ajuste específico para pantallas pequeñas (Celulares) */
     @media (max-width: 768px) {
-      .main-wrapper { flex-direction: column; align-items: center; }
-      .search-section, .ranking-section { width: 95%; }
+      h1 {
+        font-size: 1.8em; /* Tamaño fijo más pequeño para que no rompa la línea */
+        margin-bottom: 20px;
+        padding: 0 10px;
+      }
+      .main-wrapper { 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 20px;
+      }
+      .search-section, .ranking-section { 
+        width: 100%; /* Que ocupen todo el ancho del celular */
+        max-width: 350px;
+      }
+      .content-wrapper {
+        padding: 20px 10px;
+      }
     }
   </style>
 </head>
