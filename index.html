@@ -43,6 +43,25 @@
       box-sizing: border-box;
     }
 
+    /* ESTILO DEL LOGO */
+    .logo-container {
+      margin-top: 20px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    
+    .main-logo {
+      width: 120px; /* Ajusta el tamaño aquí */
+      height: auto;
+      filter: drop-shadow(0 0 8px var(--primary)); /* Glow neón al logo */
+      animation: logo-glow 2s infinite ease-in-out;
+    }
+
+    @keyframes logo-glow {
+      0%, 100% { filter: drop-shadow(0 0 5px var(--primary)); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 15px var(--primary)); transform: scale(1.05); }
+    }
+
     h1 { 
       margin-bottom: 50px; text-shadow: 4px 4px 0px #ff00ff; 
       font-size: clamp(1.1em, 5vw, 2.2em); text-align: center; line-height: 1.6;
@@ -123,13 +142,18 @@
       body { font-size: 10px; }
       h1 { font-size: 1.1em; }
       .box { width: 100%; }
-      .rank-header { font-size: 8px; }
+      .main-logo { width: 100px; }
     }
   </style>
 </head>
 <body onload="obtenerRanking()">
 
-  <div id="particles-js"></div> 
+  <div id="particles-js"></div>
+  
+  <div class="content-wrapper"> 
+    <div class="logo-container">
+      <img src="LogoBebecho.png" alt="BebechoPlayers Logo" class="main-logo">
+    </div>
 
   <div class="content-wrapper"> 
     <h1>INSERT COIN:<br>BEBECHO PLAYERS</h1>
