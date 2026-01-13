@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XP BebechoPlayers - Retro Edition</title>
+  <title>XP BebechoPlayers - BASE DE DATOS DE PUNTOS</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #00f2ff;
       --gold: #ff00ff; 
-      --bg: #050505;
-      --card: rgba(15, 15, 25, 0.95);
+      --bg: #020b12; /* Azul espacio muy oscuro */
+      --card: rgba(10, 25, 40, 0.95);
       --text: #fff;
       --accent: #39ff14; 
     }
@@ -25,14 +25,14 @@
       font-size: 12px;
     }
 
-    /* Scanlines sutiles */
+    /* Scanlines sutiles para monitor de nave */
     body::before {
       content: " ";
       display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-      z-index: 10; background-size: 100% 4px, 3px 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+      z-index: 10; background-size: 100% 3px;
       pointer-events: none;
+      opacity: 0.3;
     }
 
     #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; }
@@ -43,106 +43,101 @@
       box-sizing: border-box;
     }
 
-    /* ESTILO DEL LOGO */
-    .logo-container {
-      margin-top: 20px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
+    .logo-container { margin-top: 10px; margin-bottom: 5px; text-align: center; }
     
     .main-logo {
-      width: 120px; /* Ajusta el tamaño aquí */
+      width: 130px;
       height: auto;
-      filter: drop-shadow(0 0 8px var(--primary)); /* Glow neón al logo */
-      animation: logo-glow 2s infinite ease-in-out;
+      filter: drop-shadow(0 0 10px var(--primary));
+      animation: orbit 4s infinite ease-in-out;
     }
 
-    @keyframes logo-glow {
-      0%, 100% { filter: drop-shadow(0 0 5px var(--primary)); transform: scale(1); }
-      50% { filter: drop-shadow(0 0 15px var(--primary)); transform: scale(1.05); }
+    @keyframes orbit {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
     }
 
     h1 { 
-      margin-bottom: 50px; text-shadow: 4px 4px 0px #ff00ff; 
-      font-size: clamp(1.1em, 5vw, 2.2em); text-align: center; line-height: 1.6;
+      margin-bottom: 40px; text-shadow: 0 0 15px var(--primary); 
+      font-size: clamp(0.9em, 4vw, 1.8em); text-align: center; line-height: 1.8;
+      color: var(--primary);
     }
 
     .main-wrapper { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; width: 100%; }
 
     .box {
       background: var(--card);
-      padding: 25px; border-radius: 2px;
-      border: 4px solid var(--primary);
-      box-shadow: 8px 8px 0px rgba(0, 242, 255, 0.2);
+      padding: 25px; border-radius: 5px;
+      border: 2px solid var(--primary);
+      box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.2), 0 0 20px rgba(0, 242, 255, 0.1);
       box-sizing: border-box;
     }
 
     .search-section { flex: 2; min-width: 320px; text-align: center; }
     .ranking-section { 
       flex: 1; min-width: 280px; 
-      border-color: var(--gold); 
-      box-shadow: 8px 8px 0px rgba(255, 0, 255, 0.2);
+      border-color: var(--gold);
+      box-shadow: inset 0 0 15px rgba(255, 0, 255, 0.1);
     }
 
     input {
-      padding: 15px; width: 85%; border: 3px solid #444; margin-bottom: 25px;
-      background: #000; color: var(--accent); font-family: 'Press Start 2P', cursive;
+      padding: 15px; width: 85%; border: 2px solid var(--primary); margin-bottom: 25px;
+      background: rgba(0,0,0,0.7); color: var(--accent); font-family: 'Press Start 2P', cursive;
       font-size: 10px; outline: none; box-sizing: border-box;
+      text-align: center;
     }
 
     button {
-      padding: 15px 25px; background: var(--primary); color: #000;
-      border: none; border-bottom: 6px solid #008899;
-      cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 10px;
+      padding: 18px 30px; background: var(--primary); color: #000;
+      border: 2px solid #fff; cursor: pointer; font-family: 'Press Start 2P', cursive; 
+      font-size: 10px; transition: 0.2s; position: relative;
     }
 
-    button:active { border-bottom-width: 0px; transform: translateY(6px); }
+    button:hover { background: #fff; box-shadow: 0 0 20px var(--primary); }
+    button:active { transform: scale(0.95); }
+
+    .scanning-active { animation: blink-red 0.5s infinite; }
+    @keyframes blink-red { 50% { background: #ff4444; } }
 
     .progress-container {
-      margin: 20px 0; background: #222; height: 18px; 
-      border: 3px solid #fff; position: relative;
+      margin: 20px 0; background: #000; height: 14px; 
+      border: 2px solid var(--primary); overflow: hidden;
     }
     .progress-bar {
-      height: 100%; background: var(--accent); width: 0%;
-      box-shadow: inset -4px 0px 0px #228b22; transition: width 1s steps(10);
+      height: 100%; background: var(--primary); width: 0%;
+      box-shadow: 0 0 15px var(--primary); transition: width 1.5s ease-in-out;
     }
 
-    .info-card { margin-top: 30px; padding: 20px; border: 2px dashed #555; text-align: left; }
-    .info-label { color: #888; font-size: 8px; margin-bottom: 8px; display: block; }
-    .info-value { font-size: 10px; margin-bottom: 15px; display: block; color: var(--primary); }
+    .info-card { 
+      margin-top: 30px; padding: 20px; border: 1px solid var(--primary); 
+      background: rgba(0, 242, 255, 0.05); text-align: left;
+      animation: fade-in 0.5s ease-in;
+    }
+
+    @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .info-label { color: var(--primary); font-size: 8px; margin-bottom: 8px; display: block; opacity: 0.7; }
+    .info-value { font-size: 10px; margin-bottom: 15px; display: block; color: #fff; text-shadow: 0 0 5px #fff; }
     
     .benefit-box {
-      background: rgba(57, 255, 20, 0.1); border: 2px solid var(--accent);
-      padding: 10px; margin-top: 10px; color: var(--accent); font-size: 8px; line-height: 1.5;
+      background: rgba(57, 255, 20, 0.05); border-left: 4px solid var(--accent);
+      padding: 12px; margin-top: 10px; color: var(--accent); font-size: 8px; line-height: 1.8;
     }
 
-    /* AJUSTE PARA NOMBRES COMPLETOS EN EL RANKING */
     .rank-item {
-      display: flex; 
-      flex-direction: column; /* Cambiado a columna para que quepa el nombre largo arriba y puntos abajo si es necesario */
-      gap: 5px;
-      padding: 12px;
-      margin: 12px 0; 
-      background: #111; 
-      border-left: 5px solid var(--gold);
+      display: flex; flex-direction: column; gap: 5px; padding: 12px;
+      margin: 12px 0; background: rgba(255, 255, 255, 0.02); 
+      border-bottom: 1px solid rgba(255, 0, 255, 0.3);
     }
     
-    .rank-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 9px;
-      line-height: 1.4;
-    }
+    .rank-header { display: flex; justify-content: space-between; font-size: 8px; }
 
-    .top-1 { background: rgba(255, 0, 255, 0.1); border-left-color: #fff; animation: blink 1s infinite; }
-    @keyframes blink { 50% { border-left-color: transparent; } }
+    .top-1 { border: 1px solid var(--gold); background: rgba(255, 0, 255, 0.05); }
 
     @media (max-width: 768px) {
       body { font-size: 10px; }
-      h1 { font-size: 1.1em; }
+      h1 { font-size: 0.9em; }
       .box { width: 100%; }
-      .main-logo { width: 100px; }
     }
   </style>
 </head>
@@ -152,39 +147,41 @@
   
   <div class="content-wrapper"> 
     <div class="logo-container">
-      <img src="LogoBebecho.png" alt="BebechoPlayers Logo" class="main-logo">
+      <img src="LogoBebecho.png" alt="Logo" class="main-logo">
     </div>
 
-  <div class="content-wrapper"> 
-    <h1>INSERT COIN:<br>BEBECHO PLAYERS</h1>
+    <h1>> INSERT COIN:<br>BEBECHO_PLAYERS</h1>
 
     <div class="main-wrapper">
       <div class="box search-section">
-        <h2 style="color: var(--primary); font-size: 12px;">> PANEL_USUARIO</h2>
-        <input id="nombreInput" type="text" placeholder="ESCRIBE TU NOMBRE" onkeypress="if(event.key === 'Enter') buscarPuntos()">
+        <h2 style="color: var(--primary); font-size: 10px;">[ PANEL_USUARIO ]</h2>
+        <input id="nombreInput" type="text" placeholder="ID_USUARIO" onkeypress="if(event.key === 'Enter') buscarPuntos()">
         <br>
-        <button onclick="buscarPuntos()">ESCANEAR_XP</button>
+        <button id="btnScan" onclick="buscarPuntos()">INICIAR_ESCANEO</button>
         <div id="resultado"></div>
       </div>
 
       <div class="box ranking-section">
-        <h2 style="color: var(--gold); text-align: center; font-size: 12px;">TOP 5 - MEJORES PUNTAJES</h2>
-        <div id="lista-ranking" style="color: #aaa; text-align: center;">...</div>
+        <h2 style="color: var(--gold); text-align: center; font-size: 10px;">TOP_5-MEJORES_CLIENTES</h2>
+        <div id="lista-ranking" style="color: #666; text-align: center;">...</div>
       </div>
     </div>
   </div>
+
+  <audio id="sndClick" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+  <audio id="sndSuccess" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
 
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
     particlesJS('particles-js', {
       "particles": {
-        "number": { "value": 30 },
-        "color": { "value": "#ff00ff" },
-        "shape": { "type": "edge" },
-        "opacity": { "value": 0.4 },
-        "size": { "value": 3 },
-        "line_linked": { "enable": false },
-        "move": { "enable": true, "speed": 1.2, "direction": "top" }
+        "number": { "value": 60 },
+        "color": { "value": "#00f2ff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.2 },
+        "size": { "value": 1.5 },
+        "line_linked": { "enable": true, "distance": 120, "color": "#00f2ff", "opacity": 0.1 },
+        "move": { "enable": true, "speed": 0.8 }
       }
     });
   </script>
@@ -195,37 +192,61 @@
     function buscarPuntos() {
       const nombre = document.getElementById("nombreInput").value.trim();
       const resDiv = document.getElementById("resultado");
+      const btn = document.getElementById("btnScan");
+      const sndClick = document.getElementById("sndClick");
+      const sndSuccess = document.getElementById("sndSuccess");
+
       if (!nombre) return;
-      resDiv.innerHTML = "<p style='color: var(--accent)'>CONNECTING...</p>";
+      
+      // Sonido de Click e interfaz ocupada
+      sndClick.play();
+      btn.classList.add("scanning-active");
+      btn.innerText = "ESCANEO_EN_CURSO...";
+      resDiv.innerHTML = "<p style='color: var(--primary); margin-top:20px; font-size:8px;'>BUSCANDO EN LA BASE DE DATOS...</p>";
       
       fetch(SCRIPT_URL + "?nombre=" + encodeURIComponent(nombre))
       .then(r => r.json())
       .then(data => {
+        btn.classList.remove("scanning-active");
+        btn.innerText = "INICIAR_ESCANEO";
+
         if (data.error) {
-          resDiv.innerHTML = `<p style="color: #f00; margin-top:20px;">! ERROR: NOT_FOUND</p>`;
+          resDiv.innerHTML = `<p style="color: #f44; margin-top:20px; font-size:8px;">! ERROR: PLAYER_NO_IDENTIFICADO</p>`;
         } else {
+          sndSuccess.play(); // Sonido de éxito
           const progreso = data.puntos >= 800 ? 100 : ((data.puntos - data.xpMin) / (data.xpMax - data.xpMin)) * 100;
+          
           resDiv.innerHTML = `
             <div class="info-card">
               <span class="info-label">USUARIO</span>
-              <span class="info-value">${data.nombre.toUpperCase()}</span>
+              <span class="info-value">> ${data.nombre.toUpperCase()}</span>
               
-              <span class="info-label">NIVEL</span>
-              <span class="info-value" style="color:var(--gold)">LVL: ${data.nivel}</span>
+              <span class="info-label">NIVEL_ACTUAL</span>
+              <span class="info-value" style="color:var(--gold)">LEVEL: ${data.nivel}</span>
 
-              <span class="info-label">XP_PROGRESS</span>
+              <span class="info-label">PROGRESO_XP</span>
               <div class="progress-container">
-                <div class="progress-bar" style="width: ${progreso}%"></div>
+                <div class="progress-bar" id="pBar" style="width: 0%"></div>
               </div>
-              <div style="display:flex; justify-content:space-between; font-size:7px; color:#555;">
+              <div style="display:flex; justify-content:space-between; font-size:7px; color:var(--primary); opacity:0.6;">
                 <span>${data.puntos} XP</span>
-                <span>DEBE ALCANZAR: ${data.xpMax}</span>
+                <span>DEBE_ALCANZAR: ${data.xpMax}</span>
               </div>
               
-              <span class="info-label" style="margin-top:10px; display:block;">BENEFICIOS</span>
+              <span class="info-label" style="margin-top:15px; display:block;">BENEFICIO_DESBLOQUEADO</span>
               <div class="benefit-box">${data.beneficios}</div>
             </div>`;
+          
+          // Pequeño delay para que la barra se anime después de aparecer
+          setTimeout(() => {
+            document.getElementById("pBar").style.width = progreso + "%";
+          }, 100);
         }
+      })
+      .catch(() => {
+        btn.classList.remove("scanning-active");
+        btn.innerText = "INICIAR_ESCANEO";
+        resDiv.innerHTML = "ERR: FALLO_DE_CONEXION";
       });
     }
 
@@ -235,12 +256,11 @@
         if (data.ranking) {
           rankDiv.innerHTML = "";
           data.ranking.forEach((j, i) => {
-            // ELIMINADO EL SUBSTRING PARA MOSTRAR NOMBRE COMPLETO
             rankDiv.innerHTML += `
               <div class="rank-item ${i === 0 ? 'top-1' : ''}">
                 <div class="rank-header">
-                  <span>${i+1}P ${j.nombre.toUpperCase()}</span>
-                  <span style="color:var(--accent)">${j.puntos}</span>
+                  <span>#0${i+1} ${j.nombre.toUpperCase()}</span>
+                  <span style="color:var(--primary)">${j.puntos} XP</span>
                 </div>
               </div>`;
           });
@@ -250,4 +270,3 @@
   </script>
 </body>
 </html>
-
