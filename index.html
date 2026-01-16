@@ -110,6 +110,13 @@
 
     .btn-cerrar { position: absolute; top: 10px; right: 12px; color: var(--gold); cursor: pointer; font-size: 12px; }
 
+    /* ESTILO CLIENTE LEGENDARIO */
+    .legendary-box {
+      border: 1px double var(--gold); padding: 10px; margin-bottom: 15px;
+      background: rgba(255, 0, 255, 0.1); text-align: center;
+      box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+    }
+
     .rank-item { padding: 10px; margin: 8px 0; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid rgba(255, 0, 255, 0.2); }
     .rank-header { display: flex; justify-content: space-between; font-size: 7px; }
     .top-1 { border: 1px solid var(--gold); background: rgba(255, 0, 255, 0.05); }
@@ -139,6 +146,12 @@
 
       <div class="box ranking-section">
         <h2 style="color: var(--gold); text-align: center; font-size: 9px;">TOP_5-MEJORES_PUNTAJES</h2>
+        
+        <div class="legendary-box">
+          <div style="color: var(--gold); font-size: 6px; margin-bottom: 5px;">⭐ CLIENTE_LEGENDARIO ⭐</div>
+          <div style="color: #fff; font-size: 8px;">FRANCO BOERO</div>
+        </div>
+
         <div id="lista-ranking" style="color: #666; text-align: center;">...</div>
       </div>
     </div>
@@ -167,7 +180,7 @@
       }
     });
 
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzj3V_w6i2fmYJcEfgZxAoZCylU0jY9JJCt7VNWVPrRCeggezJxwk6NUGZRyarlCTBP/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7NKg2MPWD3yM8AKsGRBEAwHQjYxo2z-phqSBZ2L1vPWf41tPUzsawEUTC1i82AEEH/exec";
     let detalleGlobal = ""; 
 
     function buscarPuntos() {
@@ -195,7 +208,6 @@
           detalleGlobal = data.detalleExtendido;
           const progreso = data.puntos >= 800 ? 100 : ((data.puntos - data.xpMin) / (data.xpMax - data.xpMin)) * 100;
           
-          // Lógica de color para el puesto
           const colorPuesto = data.puesto <= 10 ? "var(--gold)" : "var(--primary)";
 
           resDiv.innerHTML = `
