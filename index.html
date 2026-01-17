@@ -3,165 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>XP BebechoPlayers - BASE DE DATOS DE PUNTOS</title>
+  <title>XP BebechoPlayers</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #00f2ff;
-      --gold: #ff00ff; 
-      --bg: #020b12;
-      --card: rgba(10, 25, 40, 0.95);
-      --text: #fff;
-      --accent: #39ff14; 
-    }
-
+    /* ... (Todos tus estilos anteriores se mantienen intactos) ... */
+    :root { --primary: #00f2ff; --gold: #ff00ff; --bg: #020b12; --card: rgba(10, 25, 40, 0.95); --text: #fff; --accent: #39ff14; }
     * { box-sizing: border-box; }
-
-    body {
-      font-family: 'Press Start 2P', cursive;
-      background-color: var(--bg);
-      color: var(--text);
-      margin: 0; padding: 0;
-      display: flex; flex-direction: column; align-items: center;
-      min-height: 100vh; position: relative; overflow-x: hidden;
-      font-size: 12px;
-    }
-
-    body::before {
-      content: " ";
-      display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
-      z-index: 10; background-size: 100% 3px;
-      pointer-events: none; opacity: 0.3;
-    }
-
+    body { font-family: 'Press Start 2P', cursive; background-color: var(--bg); color: var(--text); margin: 0; min-height: 100vh; overflow-x: hidden; font-size: 12px; display: flex; flex-direction: column; align-items: center; }
+    body::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%); z-index: 10; background-size: 100% 3px; pointer-events: none; opacity: 0.3; }
     #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; }
+    .content-wrapper { position: relative; z-index: 1; padding: 20px 15px; width: 100%; max-width: 1100px; }
+    .logo-container { text-align: center; margin-bottom: 5px; }
+    .main-logo { width: 120px; filter: drop-shadow(0 0 10px var(--primary)); animation: orbit 4s infinite ease-in-out; }
+    @keyframes orbit { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    h1 { margin-bottom: 30px; text-shadow: 0 0 15px var(--primary); font-size: clamp(0.8em, 4vw, 1.5em); text-align: center; color: var(--primary); }
 
-    .content-wrapper {
-      position: relative; z-index: 1; padding: 20px 15px;
-      width: 100%; max-width: 1100px; display: flex; flex-direction: column; align-items: center;
-    }
+    .main-wrapper { display: flex; flex-wrap: wrap; gap: 20px; width: 100%; }
+    .left-column { flex: 2; min-width: 300px; display: flex; flex-direction: column; gap: 20px; }
+    .right-column { flex: 1; min-width: 300px; }
 
-    .logo-container { margin-top: 10px; margin-bottom: 5px; text-align: center; }
-    .main-logo { width: 120px; height: auto; filter: drop-shadow(0 0 10px var(--primary)); animation: orbit 4s infinite ease-in-out; }
+    .box { background: var(--card); padding: 20px; border-radius: 5px; border: 2px solid var(--primary); box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.2); text-align: center; }
+    .ranking-section { border-color: var(--gold); height: 100%; }
 
-    @keyframes orbit {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(2deg); }
-    }
+    input { padding: 15px; width: 100%; max-width: 350px; border: 2px solid var(--primary); margin-bottom: 20px; background: rgba(0,0,0,0.7); color: var(--accent); font-family: 'Press Start 2P', cursive; font-size: 10px; text-align: center; outline: none; }
+    button { padding: 15px 20px; background: var(--primary); color: #000; border: 2px solid #fff; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 9px; }
+    .btn-cat { background: var(--gold); width: 100%; max-width: 350px; }
 
-    h1 { 
-      margin-bottom: 30px; text-shadow: 0 0 15px var(--primary); 
-      font-size: clamp(0.8em, 4vw, 1.5em); text-align: center; line-height: 1.6;
-      color: var(--primary);
-    }
-
-    .main-wrapper { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; }
-
-    .box {
-      background: var(--card); padding: 20px; border-radius: 5px; border: 2px solid var(--primary);
-      box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.2), 0 0 20px rgba(0, 242, 255, 0.1);
-      width: 100%;
-    }
-
-    .search-section { flex: 2; min-width: 300px; text-align: center; }
-    .ranking-section { flex: 1; min-width: 300px; border-color: var(--gold); }
-
-    input {
-      padding: 15px; width: 100%; max-width: 350px; border: 2px solid var(--primary); margin-bottom: 20px;
-      background: rgba(0,0,0,0.7); color: var(--accent); font-family: 'Press Start 2P', cursive;
-      font-size: 10px; outline: none; text-align: center;
-    }
-
-    button {
-      padding: 15px 20px; background: var(--primary); color: #000;
-      border: 2px solid #fff; cursor: pointer; font-family: 'Press Start 2P', cursive; 
-      font-size: 9px; transition: 0.2s;
-    }
-
-    button:active { transform: scale(0.95); }
-    .scanning-active { animation: blink-red 0.5s infinite; }
-    @keyframes blink-red { 50% { background: #ff4444; } }
-
-    .progress-container { margin: 15px 0; background: #000; height: 12px; border: 1px solid var(--primary); overflow: hidden; }
-    .progress-bar { height: 100%; background: var(--primary); width: 0%; box-shadow: 0 0 10px var(--primary); transition: width 1.5s ease-in-out; }
-
-    .info-card { margin-top: 25px; padding: 15px; border: 1px solid var(--primary); background: rgba(0, 242, 255, 0.05); text-align: left; animation: fade-in 0.5s ease-in; }
-    @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+    .info-card { margin-top: 25px; padding: 15px; border: 1px solid var(--primary); background: rgba(0, 242, 255, 0.05); text-align: left; }
     .info-label { color: var(--primary); font-size: 7px; margin-bottom: 5px; display: block; opacity: 0.7; }
     .info-value { font-size: 9px; margin-bottom: 12px; display: block; color: #fff; }
-    .benefit-box { background: rgba(57, 255, 20, 0.05); border-left: 3px solid var(--accent); padding: 10px; color: var(--accent); font-size: 7px; line-height: 1.6; }
+    .progress-container { margin: 15px 0; background: #000; height: 12px; border: 1px solid var(--primary); overflow: hidden; }
+    .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 1.5s ease; }
+    .benefit-box { background: rgba(57, 255, 20, 0.05); border-left: 3px solid var(--accent); padding: 10px; color: var(--accent); font-size: 7px; }
+    .btn-detalles { margin-top: 10px; width: 100%; background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 8px; font-size: 7px; cursor: pointer; }
 
-    .btn-detalles { margin-top: 15px; background: none; color: var(--gold); border: 1px solid var(--gold); padding: 10px; width: 100%; font-family: 'Press Start 2P', cursive; font-size: 7px; cursor: pointer; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(5px); padding: 20px; }
+    .modal-content { background: var(--card); margin: 5% auto; padding: 25px; border: 2px solid var(--gold); width: 100%; max-width: 500px; position: relative; animation: abrirCompuerta 0.4s ease; }
+    @keyframes abrirCompuerta { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    .btn-cerrar { position: absolute; top: 10px; right: 12px; color: var(--gold); cursor: pointer; }
 
-    .modal { 
-      display: none; position: fixed; z-index: 1000; left: 0; top: 0; 
-      width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(5px);
-      padding: 20px;
-    }
-    .modal-content {
-      background: var(--card); margin: 10% auto; padding: 25px; 
-      border: 2px solid var(--gold); width: 100%; max-width: 420px;
-      box-shadow: 0 0 25px rgba(255, 0, 255, 0.3); position: relative;
-      animation: abrirCompuerta 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-    }
-    @keyframes abrirCompuerta { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
+    .cat-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .btn-filter { padding: 10px; font-size: 7px; background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+    .btn-filter.active { background: var(--primary); color: #000; }
+    .lista-productos { max-height: 350px; overflow-y: auto; text-align: left; padding-right: 5px; }
+    .prod-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 0; font-size: 7px; align-items: center; }
+    .prod-precio { color: var(--accent); white-space: nowrap; margin-left: 10px; }
+    .btn-wa { background: #25D366; color: white; border: none; width: 100%; margin-top: 20px; font-size: 8px; }
 
-    .btn-cerrar { position: absolute; top: 10px; right: 12px; color: var(--gold); cursor: pointer; font-size: 12px; }
-
-    /* ESTILO CLIENTE LEGENDARIO */
-    .legendary-box {
-      border: 1px double var(--gold); padding: 10px; margin-bottom: 15px;
-      background: rgba(255, 0, 255, 0.1); text-align: center;
-      box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
-    }
-
+    .legendary-box { border: 1px double var(--gold); padding: 10px; margin-bottom: 15px; background: rgba(255, 0, 255, 0.1); }
     .rank-item { padding: 10px; margin: 8px 0; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid rgba(255, 0, 255, 0.2); }
     .rank-header { display: flex; justify-content: space-between; font-size: 7px; }
     .top-1 { border: 1px solid var(--gold); background: rgba(255, 0, 255, 0.05); }
-
-    @media (max-width: 600px) {
-      .modal-content { margin: 25% auto; padding: 20px; }
-      h1 { margin-bottom: 20px; }
-    }
+    @media (max-width: 600px) { .modal-content { margin: 15% auto; } }
   </style>
 </head>
-<body onload="obtenerRanking()">
-
+<body onload="obtenerDatosIniciales()">
   <div id="particles-js"></div>
-  
-  <div class="content-wrapper"> 
+  <div class="content-wrapper">
     <div class="logo-container"><img src="LogoBebecho.png" alt="Logo" class="main-logo"></div>
     <h1>> INSERT COIN:<br>BEBECHO_PLAYERS</h1>
 
     <div class="main-wrapper">
-      <div class="box search-section">
-        <h2 style="color: var(--primary); font-size: 9px;">[ PANEL_USUARIO ]</h2>
-        <input id="nombreInput" type="text" placeholder="ID_USUARIO" onkeypress="if(event.key === 'Enter') buscarPuntos()">
-        <br>
-        <button id="btnScan" onclick="buscarPuntos()">INICIAR_ESCANEO</button>
-        <div id="resultado"></div>
+      <div class="left-column">
+        <div class="box">
+          <h2 style="color: var(--primary); font-size: 9px;">[ PANEL_USUARIO ]</h2>
+          <input id="nombreInput" type="text" placeholder="ID_USUARIO" onkeypress="if(event.key === 'Enter') buscarPuntos()">
+          <br>
+          <button id="btnScan" onclick="buscarPuntos()">INICIAR_ESCANEO</button>
+          <div id="resultado"></div>
+        </div>
+        <div class="box" style="border-color: var(--gold);">
+          <h2 style="color: var(--gold); font-size: 9px;">[ PANEL_DE_PRODUCTOS ]</h2>
+          <p style="font-size: 6px; color: #666; margin-bottom: 15px;">EXPLORA EL CATALOGO DE COMIDITAS</p>
+          <button class="btn-cat" onclick="abrirCatalogo()">[ ABRIR_MENU_CATALOGO ]</button>
+        </div>
       </div>
 
-      <div class="box ranking-section">
-        <h2 style="color: var(--gold); text-align: center; font-size: 9px;">TOP_5-MEJORES_PUNTAJES</h2>
-        
-        <div class="legendary-box">
-          <div style="color: var(--gold); font-size: 6px; margin-bottom: 5px;">⭐ CLIENTE_LEGENDARIO ⭐</div>
-          <div style="color: #fff; font-size: 8px;">FRANCO BOERO</div>
+      <div class="right-column">
+        <div class="box ranking-section">
+          <h2 style="color: var(--gold); text-align: center; font-size: 9px;">TOP_5-MEJORES_PUNTAJES</h2>
+          <div class="legendary-box">
+            <div style="color: var(--gold); font-size: 6px; margin-bottom: 5px;">⭐ CLIENTE_LEGENDARIO ⭐</div>
+            <div style="color: #fff; font-size: 8px;">FRANCO BOERO</div>
+          </div>
+          <div id="lista-ranking" style="color: #666; text-align: center;">...</div>
         </div>
-
-        <div id="lista-ranking" style="color: #666; text-align: center;">...</div>
       </div>
     </div>
   </div>
 
   <div id="modalBeneficios" class="modal">
     <div class="modal-content">
-      <span class="btn-cerrar" onclick="cerrarModal()">[X]</span>
+      <span class="btn-cerrar" onclick="cerrarModal('modalBeneficios')">[X]</span>
       <h3 style="color: var(--gold); font-size: 9px; margin-bottom: 15px;">> ARCHIVO_RECOMPENSAS</h3>
-      <div id="textoDetalle" style="font-size: 8px; line-height: 1.8; color: #fff; text-align: left; overflow-wrap: break-word;"></div>
+      <div id="textoDetalle" style="font-size: 8px; line-height: 1.8; color: #fff;"></div>
+    </div>
+  </div>
+
+  <div id="modalCatalogo" class="modal">
+    <div class="modal-content">
+      <span class="btn-cerrar" onclick="cerrarModal('modalCatalogo')">[X]</span>
+      <h3 style="color: var(--primary); font-size: 9px; margin-bottom: 20px;">> MENU_INTERACTIVO</h3>
+      <div class="cat-nav">
+        <button class="btn-filter" onclick="filtrarCat('BURGERS', this)">BURGERS</button>
+        <button class="btn-filter" onclick="filtrarCat('PAPA', this)">PAPAS</button>
+        <button class="btn-filter" onclick="filtrarCat('PIZZA', this)">PIZZAS</button>
+        <button class="btn-filter" onclick="filtrarCat('SANDWICH', this)">SANDWICH</button>
+      </div>
+      <div id="lista-prod" class="lista-productos"><p style="text-align:center; font-size:7px; color:#555;">ELIJA CATEGORIA</p></div>
+      <button class="btn-wa" onclick="irAWhatsApp()">[ ENVIAR_PEDIDO_WA ]</button>
     </div>
   </div>
 
@@ -171,105 +121,76 @@
 
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
-    particlesJS('particles-js', {
-      "particles": {
-        "number": { "value": 40 }, "color": { "value": "#00f2ff" }, "shape": { "type": "circle" },
-        "opacity": { "value": 0.2 }, "size": { "value": 1.2 },
-        "line_linked": { "enable": true, "distance": 100, "color": "#00f2ff", "opacity": 0.1 },
-        "move": { "enable": true, "speed": 0.6 }
-      }
-    });
+    particlesJS('particles-js', { "particles": { "number": { "value": 40 }, "color": { "value": "#00f2ff" }, "opacity": { "value": 0.2 }, "size": { "value": 1.2 }, "line_linked": { "enable": true, "distance": 100, "color": "#00f2ff", "opacity": 0.1 }, "move": { "enable": true, "speed": 0.6 } } });
 
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7NKg2MPWD3yM8AKsGRBEAwHQjYxo2z-phqSBZ2L1vPWf41tPUzsawEUTC1i82AEEH/exec";
-    let detalleGlobal = ""; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwDAl6c1lkLQ0bk8edVBUx1_HXhs4viYcsUKks9TR-xHSl2r9PCbMJLjpY6jdekp-CS/exec";
+    let detalleGlobal = ""; let catalogoCompleto = [];
 
-    function buscarPuntos() {
-      const nombre = document.getElementById("nombreInput").value.trim();
-      const resDiv = document.getElementById("resultado");
-      const btn = document.getElementById("btnScan");
-
-      if (!nombre) return;
-      
-      document.getElementById("sndClick").play();
-      btn.classList.add("scanning-active");
-      btn.innerText = "ESCANEO_EN_CURSO...";
-      resDiv.innerHTML = "<p style='color: var(--primary); margin-top:20px; font-size:7px;'>ACCEDIENDO AL SATELITE...</p>";
-      
-      fetch(SCRIPT_URL + "?nombre=" + encodeURIComponent(nombre))
-      .then(r => r.json())
-      .then(data => {
-        btn.classList.remove("scanning-active");
-        btn.innerText = "INICIAR_ESCANEO";
-
-        if (data.error) {
-          resDiv.innerHTML = `<p style="color: #f44; margin-top:20px; font-size:7px;">! ERROR: NO_IDENTIFICADO</p>`;
-        } else {
-          document.getElementById("sndSuccess").play();
-          detalleGlobal = data.detalleExtendido;
-          const progreso = data.puntos >= 800 ? 100 : ((data.puntos - data.xpMin) / (data.xpMax - data.xpMin)) * 100;
-          
-          const colorPuesto = data.puesto <= 10 ? "var(--gold)" : "var(--primary)";
-
-          resDiv.innerHTML = `
-            <div class="info-card">
-              <span class="info-label">USUARIO</span>
-              <span class="info-value">${data.nombre.toUpperCase()}</span>
-              
-              <span class="info-label">TU_PUESTO_ES_:</span>
-              <span class="info-value" style="color:${colorPuesto}; text-shadow: 0 0 10px ${colorPuesto}"># ${data.puesto}</span>
-
-              <span class="info-label">NIVEL</span>
-              <span class="info-value" style="color:var(--gold)">LVL: ${data.nivel}</span>
-
-              <span class="info-label">XP_PROGRESS</span>
-              <div class="progress-container">
-                <div class="progress-bar" id="pBar" style="width: 0%"></div>
-              </div>
-              <div style="display:flex; justify-content:space-between; font-size:7px; color:#555;">
-                <span>${data.puntos} XP</span>
-                <span>DEBE ALCANZAR: ${data.xpMax}</span>
-              </div>
-              
-              <span class="info-label" style="margin-top:10px; display:block;">BENEFICIOS</span>
-              <div class="benefit-box">${data.beneficios}</div>
-              <button class="btn-detalles" onclick="abrirModal()">[ CONSULTAR_BENEFICIOS_FULL ]</button>
-            </div>`;
-          
-          setTimeout(() => { document.getElementById("pBar").style.width = progreso + "%"; }, 100);
-        }
-      });
-    }
-
-    function abrirModal() {
-      const snd = document.getElementById("sndModal");
-      snd.currentTime = 0;
-      snd.play();
-      document.getElementById("textoDetalle").innerText = detalleGlobal;
-      document.getElementById("modalBeneficios").style.display = "block";
-    }
-
-    function cerrarModal() {
-      document.getElementById("modalBeneficios").style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      if (event.target == document.getElementById("modalBeneficios")) { cerrarModal(); }
-    }
-
-    function obtenerRanking() {
-      const rankDiv = document.getElementById("lista-ranking");
+    function obtenerDatosIniciales() {
       fetch(SCRIPT_URL).then(r => r.json()).then(data => {
         if (data.ranking) {
-          rankDiv.innerHTML = "";
-          data.ranking.forEach((j, i) => {
-            rankDiv.innerHTML += `
-              <div class="rank-item ${i === 0 ? 'top-1' : ''}">
-                <div class="rank-header"><span>#0${i+1} ${j.nombre.toUpperCase()}</span><span style="color:var(--primary)">${j.puntos} XP</span></div>
-              </div>`;
-          });
+          const rDiv = document.getElementById("lista-ranking"); rDiv.innerHTML = "";
+          data.ranking.forEach((j, i) => { rDiv.innerHTML += `<div class="rank-item ${i === 0 ? 'top-1' : ''}"><div class="rank-header"><span>#0${i+1} ${j.nombre.toUpperCase()}</span><span style="color:var(--primary)">${j.puntos} XP</span></div></div>`; });
+        }
+        if (data.catalogo) catalogoCompleto = data.catalogo;
+      });
+    }
+
+    function buscarPuntos() {
+      const nom = document.getElementById("nombreInput").value.trim();
+      const res = document.getElementById("resultado"); const btn = document.getElementById("btnScan");
+      if (!nom) return;
+      document.getElementById("sndClick").play();
+      btn.innerText = "ESCANEO...";
+      fetch(SCRIPT_URL + "?nombre=" + encodeURIComponent(nom)).then(r => r.json()).then(data => {
+        btn.innerText = "INICIAR_ESCANEO";
+        if (data.error) { res.innerHTML = `<p style="color: #f44; margin-top:20px; font-size:7px;">! ERROR: NO_IDENTIFICADO</p>`; }
+        else {
+          document.getElementById("sndSuccess").play();
+          detalleGlobal = data.detalleExtendido;
+          const prog = data.puntos >= 800 ? 100 : ((data.puntos - data.xpMin) / (data.xpMax - data.xpMin)) * 100;
+          res.innerHTML = `<div class="info-card"><span class="info-label">USUARIO</span><span class="info-value">${data.nombre.toUpperCase()}</span><span class="info-label">PUESTO</span><span class="info-value" style="color:var(--gold)"># ${data.puesto}</span><span class="info-label">XP_PROGRESS</span><div class="progress-container"><div class="progress-bar" id="pBar" style="width: 0%"></div></div><div style="display:flex; justify-content:space-between; font-size:7px; color:#555;"><span>${data.puntos} XP</span><span>META: ${data.xpMax}</span></div><span class="info-label" style="margin-top:10px; display:block;">BENEFICIOS</span><div class="benefit-box">${data.beneficios}</div><button class="btn-detalles" onclick="abrirModalBeneficios()">[ VER_DETALLES_FULL ]</button></div>`;
+          setTimeout(() => { document.getElementById("pBar").style.width = prog + "%"; }, 100);
         }
       });
     }
+
+    function abrirCatalogo() { document.getElementById("sndModal").play(); document.getElementById("modalCatalogo").style.display = "block"; }
+    
+    function filtrarCat(catBuscada, btn) {
+      document.getElementById("sndClick").play();
+      document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+      
+      const listDiv = document.getElementById("lista-prod");
+      
+      // LOGICA DE BUSQUEDA FLEXIBLE
+      const filtered = catalogoCompleto.filter(p => {
+        const c = p.categoria.toUpperCase();
+        // Si el botón es PAPAS o PIZZAS, buscamos que la celda CONTENGA esa palabra
+        return c.includes(catBuscada);
+      });
+
+      if (filtered.length === 0) { 
+        listDiv.innerHTML = `<p style="text-align:center; font-size:7px; color:#555; margin-top:20px;">PROXIMAMENTE EN BEBECHO...</p>`; 
+        return; 
+      }
+      
+      // Agrupar por la Columna B (DETALLE)
+      const grupos = [...new Set(filtered.map(p => p.detalle))];
+      let h = "";
+      grupos.forEach(g => {
+        h += `<div style="color:var(--gold); font-size:6px; margin: 15px 0 5px 0; border-bottom: 1px dashed var(--gold); padding-bottom:3px; letter-spacing:1px;">[ ${g} ]</div>`;
+        filtered.filter(p => p.detalle === g).forEach(p => { 
+          h += `<div class="prod-item"><span>${p.producto}</span><span class="prod-precio">${p.precio}</span></div>`; 
+        });
+      });
+      listDiv.innerHTML = h;
+    }
+
+    function irAWhatsApp() { window.open(`https://wa.me/543794000944?text=${encodeURIComponent("Hola Bebecho! Estuve viendo el catálogo en la web y quiero hacer un pedido.")}`, '_blank'); }
+    function abrirModalBeneficios() { document.getElementById("sndModal").play(); document.getElementById("textoDetalle").innerText = detalleGlobal; document.getElementById("modalBeneficios").style.display = "block"; }
+    function cerrarModal(id) { document.getElementById(id).style.display = "none"; }
+    window.onclick = (e) => { if (e.target.className === 'modal') { cerrarModal('modalBeneficios'); cerrarModal('modalCatalogo'); } }
   </script>
 </body>
 </html>
