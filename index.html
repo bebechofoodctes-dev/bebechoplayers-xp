@@ -40,6 +40,12 @@
     .benefit-box { background: rgba(57, 255, 20, 0.05); border-left: 3px solid var(--accent); padding: 10px; color: var(--accent); font-size: 7px; }
     .btn-detalles { margin-top: 10px; width: 100%; background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 8px; font-size: 7px; cursor: pointer; }
 
+    /* ESTILOS NUEVOS PARA EL ESTADO DE INACTIVIDAD */
+    .status-box { margin-top: 15px; padding: 10px; border: 2px solid #fff; text-align: center; font-size: 7px; line-height: 1.5; }
+    .status-activo { border-color: var(--accent); background: rgba(57, 255, 20, 0.1); color: var(--accent); }
+    .status-pausa { border-color: #ffae00; background: rgba(255, 174, 0, 0.1); color: #ffae00; }
+    .status-gameover { border-color: #ff4444; background: rgba(255, 68, 68, 0.1); color: #ff4444; }
+
     .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(5px); padding: 20px; overflow-y: auto; }
     .modal-content { background: var(--card); margin: 5% auto; padding: 25px; border: 2px solid var(--gold); width: 100%; max-width: 500px; position: relative; animation: abrirCompuerta 0.4s ease; text-align: center; }
     @keyframes abrirCompuerta { from { transform: scaleY(0); } to { transform: scaleY(1); } }
@@ -151,9 +157,10 @@
   <script>
     particlesJS('particles-js', { "particles": { "number": { "value": 40 }, "color": { "value": "#00f2ff" }, "opacity": { "value": 0.2 }, "size": { "value": 1.2 }, "line_linked": { "enable": true, "distance": 100, "color": "#00f2ff", "opacity": 0.1 }, "move": { "enable": true, "speed": 0.6 } } });
 
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxLJ24dkSWgz_uBgwZUIlwSnRCFD-sCIPxKQpWwiOgoi6rAIj3RbuzqUJjhxK2F5SgE/exec";
+    // RECUERDA REEMPLAZAR ESTA URL CON TU NUEVA IMPLEMENTACIÓN DE APPS SCRIPTS SI CAMBIÓ
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_wvzC_zNFyJBrgEbi9XHZ6MULLPCCvwUErWnVx4JdcfYbWvOicTc0AwaYG0UiFtFa/exec";
     let detalleGlobal = ""; let catalogoCompleto = [];
-    let usuarioActual = ""; // Guardamos el nombre para el juego
+    let usuarioActual = ""; 
 
     function obtenerDatosIniciales() {
       fetch(SCRIPT_URL).then(r => r.json()).then(data => {
@@ -169,7 +176,7 @@
       const nom = document.getElementById("nombreInput").value.trim();
       const res = document.getElementById("resultado"); const btn = document.getElementById("btnScan");
       if (!nom) return;
-      usuarioActual = nom; // Sincronizamos con el juego
+      usuarioActual = nom; 
       document.getElementById("sndClick").play();
       btn.innerText = "ESCANEO...";
       fetch(SCRIPT_URL + "?nombre=" + encodeURIComponent(nom)).then(r => r.json()).then(data => {
@@ -179,7 +186,45 @@
           document.getElementById("sndSuccess").play();
           detalleGlobal = data.detalleExtendido;
           const prog = data.puntos >= 800 ? 100 : ((data.puntos - data.xpMin) / (data.xpMax - data.xpMin)) * 100;
-          res.innerHTML = `<div class="info-card"><span class="info-label">USUARIO</span><span class="info-value">${data.nombre.toUpperCase()}</span><span class="info-label">PUESTO</span><span class="info-value" style="color:var(--gold)"># ${data.puesto}</span><span class="info-label">XP_PROGRESS</span><div class="progress-container"><div class="progress-bar" id="pBar" style="width: 0%"></div></div><div style="display:flex; justify-content:space-between; font-size:7px; color:#555;"><span>${data.puntos} XP</span><span>META: ${data.xpMax}</span></div><span class="info-label" style="margin-top:10px; display:block;">BENEFICIOS</span><div class="benefit-box">${data.beneficios}</div><button class="btn-detalles" onclick="abrirModalBeneficios()">[ VER_DETALLES_FULL ]</button></div>`;
+          
+          // Lógica para definir la tarjeta de estado según los días de inactividad
+          let statusClass = "status-activo";
+          let statusTitle = "PLAYER_ACTIVO 🟢";
+          let statusMsg = "¡Estás en racha! 🔥 Sigue así, el menú te espera.";
+          const dias = data.nDias;
+
+          if (dias >= 11 && dias <= 20) {
+            statusClass = "status-pausa";
+            statusTitle = "EN_PAUSA 🟡";
+            statusMsg = "¡Cuidado! Tu score se está enfriando... ⏳ No dejes pasar más tiempo.";
+          } else if (dias > 20) {
+            statusClass = "status-gameover";
+            statusTitle = "GAME_OVER_INMINENTE 🔴";
+            statusMsg = "¡Alerta máxima! 🚨 Estás perdiendo XP por inactividad. ¡Pide algo para revivir!";
+          }
+
+          // Renderizado de la tarjeta principal incorporando la nueva caja de estado
+          res.innerHTML = `
+            <div class="info-card">
+              <span class="info-label">USUARIO</span><span class="info-value">${data.nombre.toUpperCase()}</span>
+              <span class="info-label">PUESTO</span><span class="info-value" style="color:var(--gold)"># ${data.puesto}</span>
+              <span class="info-label">XP_PROGRESS</span>
+              <div class="progress-container"><div class="progress-bar" id="pBar" style="width: 0%"></div></div>
+              <div style="display:flex; justify-content:space-between; font-size:7px; color:#555; margin-bottom:15px;">
+                <span>${data.puntos} XP</span><span>META: ${data.xpMax}</span>
+              </div>
+              
+              <div class="status-box ${statusClass}">
+                <div style="font-weight:bold; margin-bottom:5px;">[ ESTADO: ${statusTitle} ]</div>
+                <div style="opacity:0.8; font-size:6px; margin-bottom:5px;">${data.msgDias}</div>
+                <div>${statusMsg}</div>
+              </div>
+
+              <span class="info-label" style="margin-top:15px; display:block;">BENEFICIOS</span>
+              <div class="benefit-box">${data.beneficios}</div>
+              <button class="btn-detalles" onclick="abrirModalBeneficios()">[ VER_DETALLES_FULL ]</button>
+            </div>`;
+            
           setTimeout(() => { document.getElementById("pBar").style.width = prog + "%"; }, 100);
         }
       });
@@ -206,7 +251,7 @@
     function abrirModalBeneficios() { document.getElementById("sndModal").play(); document.getElementById("textoDetalle").innerText = detalleGlobal; document.getElementById("modalBeneficios").style.display = "block"; }
     function cerrarModal(id) { document.getElementById(id).style.display = "none"; }
     
-    // --- NUEVAS FUNCIONES PARA VIBORECHO ---
+    // --- FUNCIONES PARA VIBORECHO ---
     function abrirLobby() {
       document.getElementById("sndModal").play();
       document.getElementById("modalLobbyJuego").style.display = "block";
